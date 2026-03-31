@@ -21,19 +21,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/sensitive-words")
 @RequiredArgsConstructor
-@Tag(name = "CRUD API", description = "Endpoints for managing sensitive words in the database (Internal Consumption)")
+@Tag(name = "${api.crud.tag.name}", description = "${api.crud.tag.desc}")
 public class SensitiveWordController {
     private final SensitiveWordService sensitiveWordService;
 
     @PostMapping
-    @Operation(summary = "Create a new sensitive word", description = "Adds a new sensitive word to the database.")
+    @Operation(summary = "${api.sensitive.create.summary}", description = "${api.sensitive.create.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully created the sensitive word",
+            @ApiResponse(responseCode = "200", description = "${api.sensitive.create.200}",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = SensitiveWordDto.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid input data",
+            @ApiResponse(responseCode = "400", description = "${api.sensitive.create.400}",
                     content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
+            @ApiResponse(responseCode = "401", description = "${api.sensitive.create.401}",
                     content = @Content)
     })
     public ResponseEntity<SensitiveWordDto> create(@RequestBody @NonNull SensitiveWordDto dto) {
@@ -41,15 +41,15 @@ public class SensitiveWordController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all sensitive words (Paginated)", description = "Returns a paginated list of all sensitive words currently in the database.")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved the paginated list")
+    @Operation(summary = "${api.sensitive.get_all_paginated.summary}", description = "${api.sensitive.get_all_paginated.desc}")
+    @ApiResponse(responseCode = "200", description = "${api.sensitive.get_all_paginated.200}")
     public ResponseEntity<Page<SensitiveWordDto>> getAll(Pageable pageable) {
         return ResponseEntity.ok(sensitiveWordService.getAll(pageable));
     }
 
     @GetMapping("/all")
-    @Operation(summary = "Get all sensitive words", description = "Returns a list of all sensitive words currently in the database.")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved all words",
+    @Operation(summary = "${api.sensitive.get_all.summary}", description = "${api.sensitive.get_all.desc}")
+    @ApiResponse(responseCode = "200", description = "${api.sensitive.get_all.200}",
             content = {@Content(mediaType = "application/json",
                     array = @ArraySchema(schema = @Schema(implementation = SensitiveWordDto.class)))})
     public ResponseEntity<List<SensitiveWordDto>> getAll() {
@@ -57,12 +57,12 @@ public class SensitiveWordController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get sensitive word by ID", description = "Retrieves a single sensitive word by its unique ID.")
+    @Operation(summary = "${api.sensitive.get_by_id.summary}", description = "${api.sensitive.get_by_id.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved the sensitive word",
+            @ApiResponse(responseCode = "200", description = "${api.sensitive.get_by_id.200}",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = SensitiveWordDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Sensitive word not found",
+            @ApiResponse(responseCode = "404", description = "${api.sensitive.get_by_id.404}",
                     content = @Content)
     })
     public ResponseEntity<SensitiveWordDto> getById(@PathVariable @NonNull Long id) {
@@ -71,12 +71,12 @@ public class SensitiveWordController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update sensitive word", description = "Updates an existing sensitive word by its ID.")
+    @Operation(summary = "${api.sensitive.update.summary}", description = "${api.sensitive.update.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully updated the sensitive word",
+            @ApiResponse(responseCode = "200", description = "${api.sensitive.update.200}",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = SensitiveWordDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Sensitive word not found",
+            @ApiResponse(responseCode = "404", description = "${api.sensitive.update.404}",
                     content = @Content)
     })
     public ResponseEntity<SensitiveWordDto> update(@PathVariable @NonNull Long id, @RequestBody SensitiveWordDto dto) {
@@ -85,8 +85,8 @@ public class SensitiveWordController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete sensitive word", description = "Removes a sensitive word from the database by its ID.")
-    @ApiResponse(responseCode = "204", description = "Successfully deleted the sensitive word")
+    @Operation(summary = "${api.sensitive.delete.summary}", description = "${api.sensitive.delete.desc}")
+    @ApiResponse(responseCode = "204", description = "${api.sensitive.delete.204}")
     public ResponseEntity<Void> delete(@PathVariable @NonNull Long id) {
         sensitiveWordService.delete(id);
         return ResponseEntity.noContent().build();

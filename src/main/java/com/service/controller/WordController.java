@@ -11,25 +11,29 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/words")
 @RequiredArgsConstructor
-@Tag(name = "Filtering API", description = "Endpoints for checking and filtering sensitive words (External Consumption)")
+@Tag(name = "${api.filtering.tag.name}", description = "${api.filtering.tag.desc}")
 public class WordController {
     private final WordService wordService;
 
+    @Value("${api.health.message}")
+    private String healthMessage;
+
     @PostMapping("/check")
-    @Operation(summary = "Check and filter text", description = "Checks the input text for any sensitive words in the database and replaces them with stars.")
+    @Operation(summary = "${api.words.check.summary}", description = "${api.words.check.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully filtered the text",
+            @ApiResponse(responseCode = "200", description = "${api.words.check.200}",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = WordCheckResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Invalid input text provided",
+            @ApiResponse(responseCode = "400", description = "${api.words.check.400}",
                     content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized - Missing or invalid JWT token",
+            @ApiResponse(responseCode = "401", description = "${api.words.check.401}",
                     content = @Content)
     })
     public ResponseEntity<WordCheckResponse> checkWords(@Valid @RequestBody WordCheckRequest request) {
@@ -37,9 +41,9 @@ public class WordController {
     }
 
     @GetMapping("/health")
-    @Operation(summary = "Health check", description = "Checks if the API is running.")
-    @ApiResponse(responseCode = "200", description = "API is up and running")
+    @Operation(summary = "${api.words.health.summary}", description = "${api.words.health.desc}")
+    @ApiResponse(responseCode = "200", description = "${api.words.health.200}")
     public ResponseEntity<String> health() {
-        return ResponseEntity.ok("Sensitive Words API is running");
+        return ResponseEntity.ok(healthMessage);
     }
 }

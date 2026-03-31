@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,16 +19,31 @@ import org.springframework.context.annotation.Configuration;
 )
 public class OpenApiConfig {
 
+    @Value("${api.info.title}")
+    private String apiTitle;
+
+    @Value("${api.info.version}")
+    private String apiVersion;
+
+    @Value("${api.info.description}")
+    private String apiDescription;
+
+    @Value("${api.info.contact.name}")
+    private String contactName;
+
+    @Value("${api.info.contact.email}")
+    private String contactEmail;
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Sensitive Words API")
-                        .version("1.0.0")
-                        .description("API for checking and filtering sensitive words in chat messages, with CRUD management for the sensitive words database.")
+                        .title(apiTitle)
+                        .version(apiVersion)
+                        .description(apiDescription)
                         .contact(new Contact()
-                                .name("Development Team")
-                                .email("dev-team@flash.co.za")))
+                                .name(contactName)
+                                .email(contactEmail)))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 }

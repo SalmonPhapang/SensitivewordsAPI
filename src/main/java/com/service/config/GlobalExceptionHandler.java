@@ -1,5 +1,6 @@
 package com.service.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,26 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @Value("${error.unexpected}")
+    private String unexpectedError;
+
+    @Value("${error.access_denied}")
+    private String accessDeniedError;
+
+    @Value("${error.access_denied_details}")
+    private String accessDeniedDetails;
+
+    @Value("${error.validation_failed}")
+    private String validationFailedError;
+
+    @Value("${error.invalid_sort}")
+    private String invalidSortError;
+
     @ExceptionHandler(PropertyReferenceException.class)
     public ResponseEntity<Object> handlePropertyReferenceException(PropertyReferenceException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Invalid Sort Parameter");
+        body.put("message", invalidSortError);
         body.put("details", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -28,7 +44,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleGeneralException(Exception ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "An unexpected error occurred");
+        body.put("message", unexpectedError);
         body.put("details", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -37,8 +53,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Access Denied");
-        body.put("details", "You do not have permission to access this resource");
+        body.put("message", accessDeniedError);
+        body.put("details", accessDeniedDetails);
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
 
@@ -50,7 +66,7 @@ public class GlobalExceptionHandler {
         
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Validation Failed");
+        body.put("message", validationFailedError);
         body.put("errors", errors);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }

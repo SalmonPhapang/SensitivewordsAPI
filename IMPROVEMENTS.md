@@ -4,3 +4,4 @@
 - JWT Security Hardening : Stateless authentication protecting all service endpoints.
 - Idempotent Migrations : Robust database scripts that handle partial failures or re-runs gracefully.
 - Enhanced Swagger/DX : Full OpenAPI documentation with integrated Bearer token support.
+- Externalized string literals into a properties file for easy maintenance
