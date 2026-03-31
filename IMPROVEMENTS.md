@@ -1,0 +1,6 @@
+- DTO Pattern : Decoupling API contracts from the database schema for better maintainability.
+- Global Exception Handling : Professional and consistent JSON error responses across the entire API.
+- Pagination & Sorting : High-performance data retrieval for large sensitive word datasets.
+- JWT Security Hardening : Stateless authentication protecting all service endpoints.
+- Idempotent Migrations : Robust database scripts that handle partial failures or re-runs gracefully.
+- Enhanced Swagger/DX : Full OpenAPI documentation with integrated Bearer token support.

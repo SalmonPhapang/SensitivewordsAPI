@@ -1,14 +1,20 @@
 package com.service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.service.config.JwtAuthenticationFilter;
 import com.service.model.WordCheckRequest;
 import com.service.model.WordCheckResponse;
+import com.service.repository.UserRepository;
+import com.service.service.JwtService;
 import com.service.service.WordService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -20,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(WordController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class WordControllerTest {
 
     @Autowired
@@ -27,6 +34,21 @@ class WordControllerTest {
 
     @MockBean
     private WordService wordService;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private UserDetailsService userDetailsService;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private AuthenticationProvider authenticationProvider;
+
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
     private ObjectMapper objectMapper;

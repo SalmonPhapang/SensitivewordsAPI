@@ -1,6 +1,7 @@
 package com.service.service;
 
 import com.service.model.SensitiveWord;
+import com.service.model.SensitiveWordDto;
 import com.service.repository.SensitiveWordRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,19 +27,25 @@ class SensitiveWordServiceTest {
     private SensitiveWordService sensitiveWordService;
 
     private SensitiveWord mockWord;
+    private SensitiveWordDto mockDto;
 
     @BeforeEach
     void setUp() {
         mockWord = new SensitiveWord();
         mockWord.setId(1L);
         mockWord.setWord("BADWORD");
+
+        mockDto = SensitiveWordDto.builder()
+                .id(1L)
+                .word("BADWORD")
+                .build();
     }
 
     @Test
     void testCreate() {
         when(sensitiveWordRepository.save(any(SensitiveWord.class))).thenReturn(mockWord);
 
-        SensitiveWord result = sensitiveWordService.create(new SensitiveWord());
+        SensitiveWordDto result = sensitiveWordService.create(mockDto);
 
         assertNotNull(result);
         assertEquals("BADWORD", result.getWord());
@@ -50,7 +57,7 @@ class SensitiveWordServiceTest {
         List<SensitiveWord> words = Arrays.asList(mockWord);
         when(sensitiveWordRepository.findAll()).thenReturn(words);
 
-        List<SensitiveWord> result = sensitiveWordService.getAll();
+        List<SensitiveWordDto> result = sensitiveWordService.getAll();
 
         assertEquals(1, result.size());
         assertEquals("BADWORD", result.get(0).getWord());
@@ -60,7 +67,7 @@ class SensitiveWordServiceTest {
     void testGetById() {
         when(sensitiveWordRepository.findById(1L)).thenReturn(Optional.of(mockWord));
 
-        SensitiveWord result = sensitiveWordService.getById(1L);
+        SensitiveWordDto result = sensitiveWordService.getById(1L);
 
         assertNotNull(result);
         assertEquals("BADWORD", result.getWord());
@@ -71,13 +78,14 @@ class SensitiveWordServiceTest {
         when(sensitiveWordRepository.findById(1L)).thenReturn(Optional.of(mockWord));
         when(sensitiveWordRepository.save(any(SensitiveWord.class))).thenReturn(mockWord);
 
-        SensitiveWord updatedWord = new SensitiveWord();
-        updatedWord.setWord("NEWWORD");
+        SensitiveWordDto updatedDto = SensitiveWordDto.builder()
+                .word("NEWWORD")
+                .build();
 
-        SensitiveWord result = sensitiveWordService.update(1L, updatedWord);
+        SensitiveWordDto result = sensitiveWordService.update(1L, updatedDto);
 
         assertNotNull(result);
-        assertEquals("BADWORD", result.getWord()); // mocked to return mockWord which we updated
+        assertEquals("NEWWORD", result.getWord());
         verify(sensitiveWordRepository).save(mockWord);
     }
 
