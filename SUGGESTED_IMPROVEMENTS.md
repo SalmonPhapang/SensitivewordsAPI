@@ -10,3 +10,4 @@
 - **Refresh Tokens**: Add a way to keep users logged in securely without them having to re-authenticate every day.
 - **Actuator for Production**: Integrate Spring Boot Actuator to expose production-ready endpoints for health, metrics, and monitoring.
 - **Secure Credential Storage**: Store sensitive credentials like database connection strings in a secure vault instead of application.properties.
+- **Centralized Logging**: Integrate a third-party logging library to aggregate logs into Elasticsearch for centralized viewing, searching, and alerting.
